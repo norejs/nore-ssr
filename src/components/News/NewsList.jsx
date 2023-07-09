@@ -8,8 +8,8 @@ export default function NewsList({ list = [], loading = false, error } = {}) {
             {error && <div>{error}</div>}
             {(list ?? []).map((item) => {
                 return (
-                    <li key={item.uniquekey}>
-                        <Link to={`/detail/${item.uniquekey}`}>
+                    <li key={item.id}>
+                        <Link to={`/detail/${item.id}`}>
                             {item.title}
                         </Link>
                     </li>

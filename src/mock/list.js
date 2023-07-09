@@ -1,19 +1,78 @@
-// 生成mock数据
-const Mock = require('mockjs');
+import { rest } from 'msw';
+// 用mockjs 生成新闻列表数据
+import Mock from 'mockjs';
 const Random = Mock.Random;
-const produceNewsData = function () {
-    let articles = [];
-    for (let i = 0; i < 100; i++) {
-        let newArticleObject = {
-            title: Random.csentence(5, 30), //  Random.csentence( min, max )
-            thumbnail_pic_s: Random.dataImage('300x250', 'mock的图片'), // Random.dataImage( size, text ) 生成一段随机的 Base64 图片编码
-            author_name: Random.cname(), // Random.cname() 随机生成一个常见的中文姓名
-            date: Random.date() + ' ' + Random.time(), // Random.date()指示生成的日期字符串的格式,默认为yyyy-MM-dd；Random.time() 返回一个随机的时间字符串
+const newsList = function () {
+    let newsList = [];
+    for (let i = 0; i < 10; i++) {
+        let news = {
+            id: Random.guid(),
+            title: Random.ctitle(10, 20),
+            content: Random.cparagraph(10, 20),
+            time: Random.date('yyyy-MM-dd'),
         };
-        articles.push(newArticleObject);
+        newsList.push(news);
     }
-    return {
-        articles: articles,
-    };
+    return newsList;
 };
-Mock.mock('/news/index', /post|get/i, produceNewsData); // 当post或get请求到/news/index路由时Mock会拦截请求并返回上面的数据
+const newsDetail = function () {
+    let newsDetail = {
+        id: Random.guid(),
+        title: Random.ctitle(10, 20),
+        content: Random.cparagraph(10, 20),
+        time: Random.date('yyyy-MM-dd'),
+    };
+    return newsDetail;
+};
+
+export const handlers = [
+    rest.post('/login', (req, res, ctx) => {
+        // Persist user's authentication in the session
+        sessionStorage.setItem('is-authenticated', 'true');
+
+        return res(
+            // Respond with a 200 status code
+            ctx.status(200)
+        );
+    }),
+    rest.get('/news/index', (req, res, ctx) => {
+        // If authenticated, return a mocked user details
+        return res(
+            ctx.status(200),
+            ctx.json({
+                result: newsList(),
+            })
+        );
+    }),
+    rest.get('/news/content', (req, res, ctx) => {
+        // If authenticated, return a mocked user details
+        return res(
+            ctx.status(200),
+            ctx.json({
+                result: newsDetail(),
+            })
+        );
+    }),
+    rest.get('/user', (req, res, ctx) => {
+        // Check if the user is authenticated in this session
+        const isAuthenticated = sessionStorage.getItem('is-authenticated');
+
+        if (!isAuthenticated) {
+            // If not authenticated, respond with a 403 error
+            return res(
+                ctx.status(403),
+                ctx.json({
+                    errorMessage: 'Not authorized',
+                })
+            );
+        }
+
+        // If authenticated, return a mocked user details
+        return res(
+            ctx.status(200),
+            ctx.json({
+                username: 'admin',
+            })
+        );
+    }),
+];

@@ -5,6 +5,12 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import Home from './pages//Home';
 import Detail from './pages/Detail';
+
+if (process.env.NODE_ENV === 'development') {
+    const { worker } = require('./mock/browser');
+    worker.start();
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(

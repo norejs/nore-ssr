@@ -18,24 +18,17 @@ export default function Detail(props) {
         // fetch data
         const res = await getNewsDetail(id);
         const { result } = res;
-        if (result?.detail) {
-            console.log(result.detail);
-            setDetail(result.detail);
+        if (result) {
+            setDetail(result);
         } else {
             setDetail({});
         }
     };
-    const { title, url } = detail;
+    const { title, content } = detail;
     return (
         <>
             <h1>{title}</h1>
-            <iframe
-                padding="0"
-                border="0"
-                width="100%"
-                height="500"
-                src={url}
-            ></iframe>
+            <p>{content}</p>
         </>
     );
 }
