@@ -12,7 +12,7 @@ export default function Detail(props) {
                 fetchInstance.cancel();
             } catch (error) {}
         };
-    }, []);
+    }, [id]);
 
     const fetch = async (id) => {
         // fetch data

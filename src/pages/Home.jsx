@@ -4,9 +4,7 @@ import NewsList from '../components/News/NewsList';
 
 export default function Home() {
     const [list, setList] = useState([]);
-    useEffect(() => {
-        fetch();
-    }, []);
+
     const fetch = useCallback(async () => {
         const res = await getNewsList();
         const { result } = res;
@@ -16,6 +14,11 @@ export default function Home() {
             setList([]);
         }
     }, []);
+
+    useEffect(() => {
+        fetch();
+    }, [fetch]);
+
     return (
         <>
             <h1>Home</h1>
