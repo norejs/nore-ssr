@@ -1,0 +1,13 @@
+{
+    "name": "ssr-server",
+    "version": "0.0.0",
+    "description": "> TODO: description",
+    "author": "pengzai <roc.liu@hotmail.com>",
+    "license": "ISC",
+    "scripts": {
+        "test": "echo \"Error: run tests from root\" && exit 1"
+    },
+    "bugs": {
+        "url": "https://github.com/pengzai-dev/UniversalSSR/issues"
+    }
+}
