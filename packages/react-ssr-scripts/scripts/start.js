@@ -13,7 +13,7 @@ module.exports = function start(options, webpackEnv = 'development') {
     const baseWebpackConfig = require(webpackConfigPath)('production');
     const webpackConfigFactory = getSSRWebpackConfig();
     const webpackConfig = webpackConfigFactory(baseWebpackConfig, webpackEnv);
-    return runWebpack(webpackConfig);
+    return runWebpack(webpackConfig, webpackEnv);
 };
 /**
  * 获取ssr的webpack配置
