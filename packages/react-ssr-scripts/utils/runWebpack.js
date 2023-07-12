@@ -8,75 +8,93 @@ const webpack = requireFromProject('webpack');
 
 // TODO:展示进度条
 // TODO: 展示结果
-module.exports = function runWebpack(config) {
-    function start() {
-        const compiler = webpack(config);
-        return new Promise((resolve, reject) => {
-            console.log('SSR Compiling...');
-            compiler.run((err, stats) => {
-                let messages;
-                if (err) {
-                    if (!err.message) {
-                        return reject(err);
-                    }
+module.exports = function runWebpack(config, webpackEnv = 'development') {
+    const isDev = webpackEnv === 'development';
+    isDev ? start(config) : build(config);
+};
+function start(config) {
+    const compiler = webpack(config);
+    compiler.watch({}, (err, stats) => {
+        if (err) {
+            return printBuildError(err);
+        }
+        const messages = formatWebpackMessages(
+            stats.toJson({ all: false, warnings: true, errors: true })
+        );
+        if (messages.errors.length) {
+            return printBuildError(new Error(messages.errors.join('\n\n')));
+        }
+        if (messages.warnings.length) {
+            console.log(chalk.yellow(messages.warnings.join('\n\n')));
+        }
+        console.log(chalk.green('SSR Compiled successfully.'));
+    });
+}
 
-                    let errMessage = err.message;
-
-                    // Add additional information for postcss errors
-                    if (
-                        Object.prototype.hasOwnProperty.call(err, 'postcssNode')
-                    ) {
-                        errMessage +=
-                            '\nCompileError: Begins at CSS selector ' +
-                            err['postcssNode'].selector;
-                    }
-
-                    messages = formatWebpackMessages({
-                        errors: [errMessage],
-                        warnings: [],
-                    });
-                } else {
-                    messages = formatWebpackMessages(
-                        stats.toJson({
-                            all: false,
-                            warnings: true,
-                            errors: true,
-                        })
-                    );
-                }
-                if (messages.errors.length) {
-                    // Only keep the first error. Others are often indicative
-                    // of the same problem, but confuse the reader with noise.
-                    if (messages.errors.length > 1) {
-                        messages.errors.length = 1;
-                    }
-                    return reject(new Error(messages.errors.join('\n\n')));
-                }
-                if (
-                    process.env.CI &&
-                    (typeof process.env.CI !== 'string' ||
-                        process.env.CI.toLowerCase() !== 'false') &&
-                    messages.warnings.length
-                ) {
-                    console.log(
-                        chalk.yellow(
-                            '\nTreating warnings as errors because process.env.CI = true.\n' +
-                                'Most CI servers set it automatically.\n'
-                        )
-                    );
-                    return reject(new Error(messages.warnings.join('\n\n')));
+function build(config) {
+    const compiler = webpack(config);
+    return new Promise((resolve, reject) => {
+        console.log('SSR Compiling...');
+        compiler.run((err, stats) => {
+            let messages;
+            if (err) {
+                if (!err.message) {
+                    return reject(err);
                 }
 
-                const resolveArgs = {
-                    stats,
-                    previousFileSizes: 0,
-                    warnings: messages.warnings,
-                };
-                return resolve(resolveArgs);
-            });
+                let errMessage = err.message;
+
+                // Add additional information for postcss errors
+                if (Object.prototype.hasOwnProperty.call(err, 'postcssNode')) {
+                    errMessage +=
+                        '\nCompileError: Begins at CSS selector ' +
+                        err['postcssNode'].selector;
+                }
+
+                messages = formatWebpackMessages({
+                    errors: [errMessage],
+                    warnings: [],
+                });
+            } else {
+                messages = formatWebpackMessages(
+                    stats.toJson({
+                        all: false,
+                        warnings: true,
+                        errors: true,
+                    })
+                );
+            }
+            if (messages.errors.length) {
+                // Only keep the first error. Others are often indicative
+                // of the same problem, but confuse the reader with noise.
+                if (messages.errors.length > 1) {
+                    messages.errors.length = 1;
+                }
+                return reject(new Error(messages.errors.join('\n\n')));
+            }
+            if (
+                process.env.CI &&
+                (typeof process.env.CI !== 'string' ||
+                    process.env.CI.toLowerCase() !== 'false') &&
+                messages.warnings.length
+            ) {
+                console.log(
+                    chalk.yellow(
+                        '\nTreating warnings as errors because process.env.CI = true.\n' +
+                            'Most CI servers set it automatically.\n'
+                    )
+                );
+                return reject(new Error(messages.warnings.join('\n\n')));
+            }
+
+            const resolveArgs = {
+                stats,
+                previousFileSizes: 0,
+                warnings: messages.warnings,
+            };
+            return resolve(resolveArgs);
         });
-    }
-    start()
+    })
         .then(
             ({ warnings }) => {
                 if (warnings.length) {
@@ -119,4 +137,4 @@ module.exports = function runWebpack(config) {
             }
             process.exit(1);
         });
-};
+}
