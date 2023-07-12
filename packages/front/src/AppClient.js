@@ -1,11 +1,11 @@
 import React from 'react';
-import { StaticRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import createRouter from './router';
-export { routes } from './router';
-export default function App({ location }) {
+
+export default function App() {
     return (
         <React.StrictMode>
-            <Router location={location}>{createRouter()}</Router>
+            <Router>{createRouter()}</Router>
         </React.StrictMode>
     );
 }
