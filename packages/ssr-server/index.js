@@ -14,8 +14,25 @@ const csrUrl = 'http://localhost:3000';
 const renderEntry = '../front/build/ssr/main.js';
 const proxy = httpProxy.createProxyServer({ target: csrUrl, ws: true });
 const App = require(renderEntry).default;
-const routes = require(renderEntry).routes;
-console.log('routes', routes);
+
+let CSRHtml = '';
+function getCSRHtml() {
+    if (CSRHtml) {
+        return Promise.resolve(CSRHtml);
+    }
+    return new Promise((resolve, reject) => {
+        require('http').get(csrUrl, (res) => {
+            let html = '';
+            res.on('data', (chunk) => {
+                html += chunk;
+            });
+            res.on('end', () => {
+                CSRHtml = html;
+                resolve(html);
+            });
+        });
+    });
+}
 
 app.get('/*', async (req, res, next) => {
     // 有后缀名或者是静态资源不处理
@@ -34,17 +51,7 @@ app.get('/*', async (req, res, next) => {
         return next();
     }
     // 通过csrUrl 获取csr的html
-    const csrHtml = await new Promise((resolve, reject) => {
-        require('http').get(csrUrl, (res) => {
-            let html = '';
-            res.on('data', (chunk) => {
-                html += chunk;
-            });
-            res.on('end', () => {
-                resolve(html);
-            });
-        });
-    });
+    const csrHtml = await getCSRHtml();
 
     const data = csrHtml.replace(
         '<div id="root">',
