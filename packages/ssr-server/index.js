@@ -3,7 +3,6 @@ const express = require('express');
 const http = require('http');
 const httpProxy = require('http-proxy');
 const app = express();
-const path = require('path');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 console.log(createProxyMiddleware);
 const server = http.createServer(app);
@@ -17,7 +16,15 @@ const proxy = httpProxy.createProxyServer({ target: csrUrl, ws: true });
 const App = require(renderEntry).default;
 const routes = require(renderEntry).routes;
 console.log('routes', routes);
-app.use('/*', async (req, res, next) => {
+
+app.get('/*', async (req, res, next) => {
+    // 有后缀名或者是静态资源不处理
+    if (
+        req.originalUrl.indexOf('.') > -1 ||
+        req.originalUrl.startsWith('/static')
+    ) {
+        return next();
+    }
     const appString = renderToString(
         React.createElement(App, {
             location: req.originalUrl,
@@ -39,9 +46,10 @@ app.use('/*', async (req, res, next) => {
         });
     });
 
-    const data = csrHtml
-        // .replace('<head>', `<head><base href="${csrUrl}"/>`)
-        .replace('<div id="root">', `<div id="root">${appString}`);
+    const data = csrHtml.replace(
+        '<div id="root">',
+        `<div id="root">${appString}`
+    );
     return res.send(data);
 });
 
