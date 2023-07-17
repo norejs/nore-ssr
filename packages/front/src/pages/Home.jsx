@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { getNewsList } from '../apis/news';
 import NewsList from '../components/News/NewsList';
+import { Counter } from '../features/counter/Counter';
 
 export default function Home() {
     const [list, setList] = useState([]);
@@ -22,6 +23,7 @@ export default function Home() {
     return (
         <>
             <h1>Home</h1>
+            <Counter />
             <NewsList list={list}></NewsList>
         </>
     );
