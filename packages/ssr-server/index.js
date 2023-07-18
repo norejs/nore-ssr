@@ -1,13 +1,13 @@
 // 启动express 服务器
-const express = require('express');
-const http = require('http');
-const httpProxy = require('http-proxy');
+import renderApp from '../Vusic/dist/bundles/index.js';
+import express from 'express';
+import http from'http';
+import httpProxy from'http-proxy';
 const app = express();
-const { createProxyMiddleware } = require('http-proxy-middleware');
+import { createProxyMiddleware } from('http-proxy-middleware');
 const server = http.createServer(app);
 
 const csrUrl = 'http://localhost:3000';
-const renderEntry = '../Vusic/build/ssr/main.js';
 const proxy = httpProxy.createProxyServer({ target: csrUrl, ws: true });
 
 
@@ -39,7 +39,6 @@ app.get('/*', async (req, res, next) => {
     ) {
         return next();
     }
-    const renderApp = require(renderEntry).default;
     const { preloadedState, html } = renderApp(req);
     const appString = html;
     if (!appString) {
