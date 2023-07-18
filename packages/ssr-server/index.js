@@ -1,34 +1,69 @@
 // 启动express 服务器
-import renderApp from '../Vusic/dist/bundles/index.js';
-import express from 'express';
-import http from'http';
-import httpProxy from'http-proxy';
+const renderApp = require('../Vusic/build/ssr/main.js').default;
+const express = require('express');
+const http = require('http');
+const httpProxy = require('http-proxy');
 const app = express();
-import { createProxyMiddleware } from('http-proxy-middleware');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+const path = require('path');
 const server = http.createServer(app);
 
 const csrUrl = 'http://localhost:3000';
 const proxy = httpProxy.createProxyServer({ target: csrUrl, ws: true });
 
-
-let CSRHtml = '';
-function getCSRHtml() {
-    if (CSRHtml) {
-        return Promise.resolve(CSRHtml);
+async function getCSRHtml() {
+    let html = await fetchFile(csrUrl);
+    const manifestJson = require('../vusic/build/ssr/asset-manifest.json');
+    try {
+        if (manifestJson?.files['main.css']) {
+            html = html.replace(
+                '</head>',
+                `<link  rel="stylesheet" href="${manifestJson?.files['main.css']}"></link></head>`
+            );
+        }
+    } catch (error) {
+        console.log('error', error);
     }
-    
+
+    return html;
+}
+const fileCache = {};
+function fetchFile(fileUrl) {
     return new Promise((resolve, reject) => {
-        require('http').get(csrUrl, (res) => {
-            let html = '';
+        if (fileCache[fileUrl]) {
+            return resolve(fileCache[fileUrl]);
+        }
+        require('http').get(fileUrl, (res) => {
+            let fileContent = '';
             res.on('data', (chunk) => {
-                html += chunk;
+                fileContent += chunk;
             });
             res.on('end', () => {
-                CSRHtml = html;
-                resolve(html);
+                fileCache[fileUrl] = fileContent;
+                resolve(fileContent);
             });
         });
     });
+}
+
+function runInMockWindow(fun, ...args) {
+    const global = new Proxy(
+        { globalThis },
+        {
+            get(target, key) {
+                console.log('key', key);
+                if (key === 'window') {
+                    return target;
+                }
+                return target[key];
+            },
+        }
+    );
+    let res;
+    with (global) {
+        res = fun(...args);
+    }
+    return res;
 }
 
 app.get('/*', async (req, res, next) => {
@@ -39,7 +74,7 @@ app.get('/*', async (req, res, next) => {
     ) {
         return next();
     }
-    const { preloadedState, html } = renderApp(req);
+    const { preloadedState, html, css } = await renderApp(req);
     const appString = html;
     if (!appString) {
         return next();
@@ -47,15 +82,17 @@ app.get('/*', async (req, res, next) => {
     // 通过csrUrl 获取csr的html
     const csrHtml = await getCSRHtml();
     const initialState = preloadedState;
-    const data = csrHtml.replace(
-        '<div id="root">',
-        `<div id="root"><script>window._INIT_STORE_STATE=${JSON.stringify(
-            initialState
-        )}</script>${appString}`
-    );
+    const data = csrHtml
+        .replace('</head>', `<style>${css}</style></head>`)
+        .replace(
+            '<div id="root">',
+            `<div id="root"><script>window._INIT_STORE_STATE=${JSON.stringify(
+                initialState
+            )}</script>${appString}`
+        );
     return res.send(data);
 });
-
+app.use(express.static(path.resolve('../vusic/build/ssr/')));
 app.use('/*', createProxyMiddleware({ target: csrUrl, changeOrigin: true }));
 
 server.on('upgrade', function (req, socket, head) {
