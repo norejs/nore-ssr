@@ -12,7 +12,6 @@ const ssrDisablePlugins = [
     'HotModuleReplacementPlugin',
     'ManifestPlugin',
     'ReactRefreshWebpackPlugin',
-    'DefinePlugin'
 ];
 const getClientEnv =
     requireFromProjectRoot('config/env') ||

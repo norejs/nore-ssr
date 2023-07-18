@@ -10,7 +10,7 @@ module.exports = function start(options, webpackEnv = 'development') {
     process.env.BABEL_ENV = webpackEnv;
     // 获取react-scripts 的配置
     const webpackConfigPath = getWebpackFile('webpack.config.js');
-    const baseWebpackConfig = require(webpackConfigPath)('production');
+    const baseWebpackConfig = require(webpackConfigPath)(webpackEnv);
     const webpackConfigFactory = getSSRWebpackConfig();
     const webpackConfig = webpackConfigFactory(baseWebpackConfig, webpackEnv);
     return runWebpack(webpackConfig, webpackEnv);
