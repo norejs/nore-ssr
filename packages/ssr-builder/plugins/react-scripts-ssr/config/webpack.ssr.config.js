@@ -33,7 +33,6 @@ module.exports = function (baseConfig, ssrConfig, webpackEnv = 'development') {
     rules.forEach((rule) => {
         if (rule.test?.toString().includes('css')) {
             rule.use.forEach((use, index) => {
-                console.log('use', use);
                 if (typeof use === 'string' && use.includes('style-loader')) {
                     rule.use[index] = {
                         loader: MiniCssExtractPlugin.loader,

@@ -2,13 +2,11 @@
     "name": "root",
     "private": true,
     "scripts": {
+        "bootstrap": "lerna bootstrap",
         "start": "lerna run start --stream --loglevel verbose"
     },
-    "devDependencies": {
-        "lerna": "^4.0.0"
-    },
+    "devDependencies": {},
     "dependencies": {
-        "@emotion/css": "^11.11.2",
-        "@emotion/server": "^11.11.0"
+        "lerna": "5"
     }
 }

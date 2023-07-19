@@ -53,8 +53,7 @@ function getWebpackFile(webpackFileName) {
         return projectWebpackConfigPath;
     }
     const webpackConfigPath = getNpmPathFromCwd(
-        'react-scripts',
-        '/config/' + webpackFileName
+        'react-scripts/config/' + webpackFileName
     );
     if (!fs.existsSync(webpackConfigPath)) {
         throw new Error(

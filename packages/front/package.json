@@ -3,7 +3,6 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "@norejs/ssr-builder": "^1.0.0",
         "@reduxjs/toolkit": "^1.9.5",
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^13.4.0",
@@ -17,13 +16,10 @@
         "react-redux": "^8.1.1",
         "react-router-dom": "5",
         "react-scripts": "5.0.1",
-        "react-ssr-scripts": "^1.0.0",
         "redux": "^4.2.1",
         "web-vitals": "^2.1.4"
     },
     "scripts": {
-        "start-ssr": "react-ssr-scripts start",
-        "build-ssr": "react-ssr-scripts build",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
