@@ -1,10 +1,10 @@
-const { requireFromProject } = require('./project');
-const formatWebpackMessages = requireFromProject(
+const { requireNpmFromCwd } = require('./project');
+const formatWebpackMessages = requireNpmFromCwd(
     'react-dev-utils/formatWebpackMessages'
 );
-const chalk = requireFromProject('react-dev-utils/chalk');
-const printBuildError = requireFromProject('react-dev-utils/printBuildError');
-const webpack = requireFromProject('webpack');
+const chalk = requireNpmFromCwd('react-dev-utils/chalk');
+const printBuildError = requireNpmFromCwd('react-dev-utils/printBuildError');
+const webpack = requireNpmFromCwd('webpack');
 
 // TODO:展示进度条
 // TODO: 展示结果

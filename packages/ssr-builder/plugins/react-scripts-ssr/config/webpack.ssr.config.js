@@ -2,11 +2,7 @@ const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
 const { merge } = require('webpack-merge');
-const {
-    requireFromProjectRoot,
-    requireFromProject,
-} = require('../utils/project');
-const { type } = require('os');
+const { requireNpmFromCwd } = require('../../../utils/project');
 // 去掉HTMLWebpackPlugin
 const ssrDisablePlugins = [
     'HtmlWebpackPlugin',
@@ -15,12 +11,10 @@ const ssrDisablePlugins = [
     'ManifestPlugin',
     'ReactRefreshWebpackPlugin',
 ];
-const getClientEnv =
-    requireFromProjectRoot('config/env') ||
-    requireFromProject('react-scripts/config/env');
-const env = getClientEnv()?.raw || {};
-const MiniCssExtractPlugin = requireFromProject('mini-css-extract-plugin');
-module.exports = function (baseConfig, webpackEnv = 'development') {
+
+const MiniCssExtractPlugin = requireNpmFromCwd('mini-css-extract-plugin');
+
+module.exports = function (baseConfig, ssrConfig, webpackEnv = 'development') {
     // 去掉多余的插件
     baseConfig.plugins = baseConfig.plugins.filter((plugin) => {
         return !ssrDisablePlugins.includes(plugin.constructor.name);
@@ -58,13 +52,10 @@ module.exports = function (baseConfig, webpackEnv = 'development') {
 
     // 读取env文件，或者自定义
     return merge(baseConfig, {
-        entry: { main: '/' + env.REACT_APP_SSR_ENTRY ?? 'src/App.js' },
+        entry: { main: '/' + ssrConfig.entry },
         output: {
             filename: '[name].js',
-            path: path.resolve(
-                projectRoot,
-                env.REACT_APP_SSR_DIST ?? 'build/ssr'
-            ),
+            path: path.resolve(projectRoot, ssrConfig.dist),
             libraryTarget: 'commonjs',
         },
         optimization: {
