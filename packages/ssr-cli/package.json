@@ -1,0 +1,32 @@
+{
+    "name": "@norejs/ssr-cli",
+    "version": "0.0.0",
+    "description": "> TODO: description",
+    "author": "pengzai <roc.liu@hotmail.com>",
+    "homepage": "https://github.com/pengzai-dev/UniversalSSR#readme",
+    "license": "ISC",
+    "main": "lib/ssr-cli.js",
+    "bin": {
+        "norejs-ssr": "bin/norejs-ssr.js"
+    },
+    "directories": {
+        "lib": "lib",
+        "test": "__tests__"
+    },
+    "files": [
+        "lib"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/pengzai-dev/UniversalSSR.git"
+    },
+    "scripts": {
+        "test": "node ./__tests__/@norejs/ssr-cli.test.js"
+    },
+    "bugs": {
+        "url": "https://github.com/pengzai-dev/UniversalSSR/issues"
+    }
+}

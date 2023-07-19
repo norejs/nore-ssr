@@ -4,7 +4,7 @@
     "description": "SSR builder for NoreJS",
     "main": "index.js",
     "bin": {
-        "norejs-ssr": "./bin/norejs-ssr.js"
+        "norejs-ssr-builder": "./bin/norejs-ssr.js"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,6 +12,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@norejs/ssr-server": "^0.0.0",
         "commander": "10",
         "fs-extra": "^11.1.1",
         "webpack-merge": "^5.9.0",

@@ -1,5 +1,5 @@
 {
-    "name": "ssr-server",
+    "name": "@norejs/ssr-server",
     "version": "0.0.0",
     "description": "> TODO: description",
     "author": "pengzai <roc.liu@hotmail.com>",
