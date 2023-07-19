@@ -28,5 +28,10 @@
     },
     "bugs": {
         "url": "https://github.com/pengzai-dev/UniversalSSR/issues"
+    },
+    "dependencies": {
+        "@norejs/ssr-builder": "^1.0.0",
+        "@norejs/ssr-server": "^0.0.0",
+        "open": "^9.1.0"
     }
 }

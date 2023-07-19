@@ -7,12 +7,12 @@ const httpProxy = require('http-proxy');
 const path = require('path');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-module.exports = function SSRServer(config, envName) {
+module.exports = function SSRServer(config, envName, cb) {
     function getPathFromSSRDsit(...args) {
         return path.resolve(process.cwd(), config.ssr.dist, ...args);
     }
     const ssrEntry = getPathFromSSRDsit('main.js');
-    const ssrManifest = require(getPathFromSSRDsit('asset-manifest.json'));
+    const ssrManifest = getPathFromSSRDsit('asset-manifest.json');
     const ssrPort = config.ssr.port || 8080;
     const renderApp = require(ssrEntry).default;
     const app = express();
@@ -75,7 +75,8 @@ module.exports = function SSRServer(config, envName) {
     });
 
     server.listen(ssrPort, () => {
-        console.log(`ssr server start http://localhost:${ssrPort}`);
+        console.log(`ssr server start: http://localhost:${ssrPort}`);
+        cb && cb({ port: ssrPort });
     });
 };
 

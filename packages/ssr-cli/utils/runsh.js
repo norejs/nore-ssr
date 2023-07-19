@@ -7,7 +7,7 @@ const { spawn } = require('child_process');
  * @param callback {(code,data)=>{}} 回调函数
  *  */
 const noop = (...props) => {};
-export default function runSh(execStr, options = {}, callback = noop) {
+module.exports = function runSh(execStr, options = {}, callback = noop) {
     const hasCallback = callback !== noop;
     const defaultOptions = { print: true };
     const args = execStr.split(' ');
@@ -16,14 +16,16 @@ export default function runSh(execStr, options = {}, callback = noop) {
     options = Object.assign(defaultOptions, options || {}, {
         stdio: print && !hasCallback ? 'inherit' : 'pipe',
     });
-
     const childProcess = spawn(command, args, options);
     if ((hasCallback || print) && childProcess.stdout) {
         const runCallback = (code, steam) => {
-            const data =
-                steam instanceof Buffer ? steam.toString('utf8') : steam;
-            print && console.log(data);
-            callback(code, data);
+            try {
+                const data =
+                    steam instanceof Buffer ? steam.toString('utf8') : steam;
+                callback(code, data);
+            } catch (error) {
+                callback('error', error);
+            }
         };
 
         childProcess.stdout.on('data', (steam) => {
@@ -39,4 +41,4 @@ export default function runSh(execStr, options = {}, callback = noop) {
         });
     }
     return childProcess;
-}
+};
