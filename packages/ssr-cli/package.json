@@ -1,6 +1,6 @@
 {
     "name": "@norejs/ssr-cli",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "> TODO: description",
     "author": "pengzai <roc.liu@hotmail.com>",
     "homepage": "https://github.com/pengzai-dev/UniversalSSR#readme",
@@ -23,8 +23,8 @@
         "url": "https://github.com/pengzai-dev/UniversalSSR/issues"
     },
     "dependencies": {
-        "@norejs/ssr-builder": "^0.0.1",
-        "@norejs/ssr-server": "^0.0.1",
+        "@norejs/ssr-builder": "^0.0.2",
+        "@norejs/ssr-server": "^0.0.2",
         "open": "^9.1.0"
     }
 }
