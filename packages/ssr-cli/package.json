@@ -9,13 +9,6 @@
     "bin": {
         "norejs-ssr": "bin/norejs-ssr.js"
     },
-    "directories": {
-        "lib": "lib",
-        "test": "__tests__"
-    },
-    "files": [
-        "lib"
-    ],
     "publishConfig": {
         "access": "public"
     },
