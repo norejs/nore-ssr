@@ -1,6 +1,7 @@
 {
   "name": "ssr-server-headless",
   "version": "0.0.0",
+  "private": true,
   "description": "> TODO: description",
   "author": "pengzai <roc.liu@hotmail.com>",
   "homepage": "https://github.com/pengzai-dev/UniversalSSR#readme",
