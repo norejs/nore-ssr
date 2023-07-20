@@ -15,7 +15,8 @@ module.exports = function start(options, webpackEnv = 'development') {
     if (isReactScriptsInstalled) {
         childProcess.push(
             runSh(
-                'react-scripts ' + (webpackEnv ? 'start' : 'build'),
+                'react-scripts ' +
+                    (webpackEnv === 'development' ? 'start' : 'build'),
                 {
                     print: false,
                 },
@@ -48,7 +49,7 @@ module.exports = function start(options, webpackEnv = 'development') {
                     '../node_modules/.bin/norejs-ssr-builder'
                 ) +
                     ' ' +
-                    (webpackEnv ? 'start' : 'build'),
+                    (webpackEnv === 'development' ? 'start' : 'build'),
                 {},
                 function (code, data = '') {
                     if (data && typeof data === 'string') {
@@ -64,7 +65,8 @@ module.exports = function start(options, webpackEnv = 'development') {
     let server;
     function startServer() {
         loaded++;
-        if (webpackEnv === 'development' && !server && loaded === 2) {
+        console.log('loaded', loaded);
+        if (!server && loaded === 2) {
             console.log(chalk.green('Starting SSR server...'));
             const SSRServer = require('@norejs/ssr-server');
             server = new SSRServer(config, webpackEnv, function ({ port }) {
@@ -77,6 +79,7 @@ module.exports = function start(options, webpackEnv = 'development') {
         }
     }
     process.on('unhandledRejection', (err) => {
+        console.log('unhandledRejection', err);
         childProcess.forEach((item) => {
             item.kill();
         });
