@@ -1,5 +1,9 @@
 {
-    "packages": ["packages/*"],
+    "packages": [
+        "packages/ssr-builder/",
+        "packages/ssr-cli/",
+        "packages/ssr-server/"
+    ],
     "npmClient": "npm",
     "version": "0.0.0",
     "hoist": false
