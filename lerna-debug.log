@@ -1,14 +1,50 @@
 0 silly argv {
-0 silly argv   _: [ 'add' ],
-0 silly argv   scope: '@norejs/ssr-cli',
-0 silly argv   globs: [],
+0 silly argv   _: [ 'version' ],
 0 silly argv   lernaVersion: '5.6.2',
 0 silly argv   '$0': 'node_modules/.bin/lerna',
-0 silly argv   pkg: '@norejs/builder'
+0 silly argv   bump: '0.0.1'
 0 silly argv }
 1 notice cli v5.6.2
 2 verbose rootPath /Users/pengzai/www/github/UniversalSSR
-3 error HttpErrorGeneral: 404 Not Found - GET https://registry.npmjs.org/@norejs%2fbuilder - Not found
-3 error     at /Users/pengzai/www/github/UniversalSSR/node_modules/npm-registry-fetch/lib/check-response.js:95:15
-3 error     at processTicksAndRejections (node:internal/process/task_queues:96:5)
-3 error     at async RegistryFetcher.packument (/Users/pengzai/www/github/UniversalSSR/node_modules/pacote/lib/registry.js:92:19)
+3 info current version 0.0.0
+4 silly isAnythingCommitted
+5 verbose isAnythingCommitted 1
+6 silly getCurrentBranch
+7 verbose currentBranch main
+8 silly remoteBranchExists
+9 silly isBehindUpstream
+10 silly isBehindUpstream main is behind origin/main by 0 commit(s) and ahead by 1
+11 silly hasTags
+12 verbose hasTags false
+13 info Assuming all packages changed
+14 verbose updated @norejs/ssr-builder
+15 verbose updated @norejs/ssr-cli
+16 verbose updated @norejs/ssr-server
+17 verbose git-describe undefined => "76ecdaa"
+18 silly git-describe parsed => {"refCount":"33","sha":"76ecdaa","isDirty":false}
+19 info execute Skipping releases
+20 silly lifecycle No script for "preversion" in "root", continuing
+21 silly lifecycle No script for "preversion" in "@norejs/ssr-server", continuing
+22 silly lifecycle No script for "version" in "@norejs/ssr-server", continuing
+23 silly lifecycle No script for "preversion" in "@norejs/ssr-builder", continuing
+24 silly lifecycle No script for "version" in "@norejs/ssr-builder", continuing
+25 silly lifecycle No script for "preversion" in "@norejs/ssr-cli", continuing
+26 silly lifecycle No script for "version" in "@norejs/ssr-cli", continuing
+27 verbose version Updating root package-lock.json
+28 error Error: Command failed with exit code 1: npm install --package-lock-only --ignore-scripts
+28 error npm WARN read-shrinkwrap This version of npm is compatible with lockfileVersion@1, but package-lock.json was generated for lockfileVersion@2. I'll try to do my best with it!
+28 error npm ERR! Maximum call stack size exceeded
+28 error npm ERR! Maximum call stack size exceeded
+28 error npm ERR! Maximum call stack size exceeded
+28 error npm ERR! Maximum call stack size exceeded
+28 error npm ERR! Maximum call stack size exceeded
+28 error npm ERR! Maximum call stack size exceeded
+28 error npm ERR! Maximum call stack size exceeded
+28 error npm ERR! Maximum call stack size exceeded
+28 error
+28 error npm ERR! A complete log of this run can be found in:
+28 error npm ERR!     /Users/pengzai/.npm/_logs/2023-07-20T02_11_58_955Z-debug.log
+28 error     at makeError (/Users/pengzai/www/github/UniversalSSR/node_modules/execa/lib/error.js:60:11)
+28 error     at handlePromise (/Users/pengzai/www/github/UniversalSSR/node_modules/execa/index.js:118:26)
+28 error     at processTicksAndRejections (internal/process/task_queues.js:95:5)
+28 error     at async Promise.all (index 0)
