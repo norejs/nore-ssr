@@ -19,14 +19,21 @@ module.exports = function (baseConfig, ssrConfig, webpackEnv = 'development') {
     baseConfig.plugins = baseConfig.plugins.filter((plugin) => {
         return !ssrDisablePlugins.includes(plugin.constructor.name);
     });
-    // baseConfig.plugins.push(
-    //     new MiniCssExtractPlugin({
-    //         // Options similar to the same options in webpackOptions.output
-    //         // both options are optional
-    //         filename: 'static/css/[name].[contenthash:8].css',
-    //         chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
-    //     })
-    // );
+    if (
+        baseConfig.plugins.find(
+            (plugin) => plugin.constructor.name === 'MiniCssExtractPlugin'
+        )
+    ) {
+        baseConfig.plugins.push(
+            new MiniCssExtractPlugin({
+                // Options similar to the same options in webpackOptions.output
+                // both options are optional
+                filename: 'static/css/[name].[contenthash:8].css',
+                chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
+            })
+        );
+    }
+
     const projectRoot = process.cwd();
     // 替换style-loader
     const rules = baseConfig.module.rules[1].oneOf;
@@ -53,7 +60,7 @@ module.exports = function (baseConfig, ssrConfig, webpackEnv = 'development') {
     return merge(baseConfig, {
         entry: { main: '/' + ssrConfig.entry },
         output: {
-            filename: '[name].js',
+            filename: 'server.js',
             path: path.resolve(projectRoot, ssrConfig.dist),
             libraryTarget: 'commonjs',
         },
@@ -61,13 +68,6 @@ module.exports = function (baseConfig, ssrConfig, webpackEnv = 'development') {
             minimize: false,
             splitChunks: false,
             runtimeChunk: false,
-        },
-        module: {
-            rules: [
-                {
-                    test: /\.css$/,
-                },
-            ],
         },
         target: 'node',
         externals: [nodeExternals()],

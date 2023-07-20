@@ -3,8 +3,11 @@ const fs = require('fs-extra');
 const defaultConfig = {
     ssr: {
         entry: 'src/server.js',
-        dist: 'build/ssr',
+        dist: 'build-ssr',
         builder: 'react-scripts-ssr',
+    },
+    csr: {
+        dist: 'build',
     },
 };
 /**

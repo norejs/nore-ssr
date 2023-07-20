@@ -6,28 +6,48 @@ const http = require('http');
 const httpProxy = require('http-proxy');
 const path = require('path');
 const { createProxyMiddleware } = require('http-proxy-middleware');
-
+const fs = require('fs-extra');
 module.exports = function SSRServer(config, envName, cb) {
     function getPathFromSSRDsit(...args) {
         return path.resolve(process.cwd(), config.ssr.dist, ...args);
     }
-    const ssrEntry = getPathFromSSRDsit('main.js');
+    function getPathFromCSRDist(...args) {
+        return path.resolve(process.cwd(), config.csr.dist, ...args);
+    }
+    const ssrEntry = getPathFromSSRDsit('server.js');
     const ssrManifest = getPathFromSSRDsit('asset-manifest.json');
     const ssrPort = config.ssr.port || 8080;
     const renderApp = require(ssrEntry).default;
     const app = express();
     const server = http.createServer(app);
     const csrUrl = config.csrUrl;
-    const proxy = httpProxy.createProxyServer({ target: csrUrl, ws: true });
+    if (csrUrl) {
+        const proxy = httpProxy.createProxyServer({ target: csrUrl, ws: true });
+        server.on('upgrade', function (req, socket, head) {
+            console.log('proxying upgrade request', req.url);
+            proxy.ws(req, socket, head);
+        });
+    }
 
     async function getCSRHtml() {
-        let html = await fetchFile(csrUrl);
+        let html = '';
+        if (csrUrl) {
+            html = await fetchFile(csrUrl);
+        } else {
+            html = await fs.readFile(getPathFromCSRDist('index.html'), 'utf-8');
+        }
+
         try {
             const manifestJson = require(ssrManifest);
             if (manifestJson?.files['main.css']) {
                 html = html.replace(
                     '</head>',
-                    `<link  rel="stylesheet" href="${manifestJson?.files['main.css']}"></link></head>`
+                    `<script>
+                        window.addEventListener('load', function () {
+                            var link = document.getElementById('ssr-main');
+                            link.parentNode.removeChild(link);
+                        })
+                    </script><link id="ssr-main" rel="stylesheet" href="${manifestJson?.files['main.css']}"></link></head>`
                 );
             }
         } catch (error) {
@@ -64,15 +84,14 @@ module.exports = function SSRServer(config, envName, cb) {
         return res.send(data);
     });
     app.use(express.static(getPathFromSSRDsit()));
-    app.use(
-        '/*',
-        createProxyMiddleware({ target: csrUrl, changeOrigin: true })
-    );
-
-    server.on('upgrade', function (req, socket, head) {
-        console.log('proxying upgrade request', req.url);
-        proxy.ws(req, socket, head);
-    });
+    if (csrUrl) {
+        app.use(
+            '/*',
+            createProxyMiddleware({ target: csrUrl, changeOrigin: true })
+        );
+    } else if (config.csr.dist) {
+        app.use(express.static(getPathFromCSRDist()));
+    }
 
     server.listen(ssrPort, () => {
         console.log(`ssr server start: http://localhost:${ssrPort}`);

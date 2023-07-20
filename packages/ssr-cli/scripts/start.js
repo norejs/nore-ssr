@@ -65,8 +65,7 @@ module.exports = function start(options, webpackEnv = 'development') {
     let server;
     function startServer() {
         loaded++;
-        console.log('loaded', loaded);
-        if (!server && loaded === 2) {
+        if (!server && loaded === 2 && webpackEnv === 'development') {
             console.log(chalk.green('Starting SSR server...'));
             const SSRServer = require('@norejs/ssr-server');
             server = new SSRServer(config, webpackEnv, function ({ port }) {

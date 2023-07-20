@@ -10,4 +10,8 @@ program.command('build').action((options, command) => {
     require('../scripts/start')(options, 'production');
 });
 
+program.command('serve').action((options, command) => {
+    require('../scripts/serve')(options, 'production');
+});
+
 program.parse(process.argv);
