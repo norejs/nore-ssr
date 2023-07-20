@@ -6,6 +6,7 @@ const { requireNpmFromCwd } = require('../../../utils/project');
 // 去掉HTMLWebpackPlugin
 const ssrDisablePlugins = [
     'HtmlWebpackPlugin',
+    'ReactRefreshPlugin',
     'InlineChunkHtmlPlugin',
     'HotModuleReplacementPlugin',
     'ManifestPlugin',
@@ -15,6 +16,7 @@ const ssrDisablePlugins = [
 const MiniCssExtractPlugin = requireNpmFromCwd('mini-css-extract-plugin');
 
 module.exports = function (baseConfig, ssrConfig, webpackEnv = 'development') {
+    console.log('baseConfig', baseConfig);
     // 去掉多余的插件
     baseConfig.plugins = baseConfig.plugins.filter((plugin) => {
         return !ssrDisablePlugins.includes(plugin.constructor.name);
@@ -58,7 +60,7 @@ module.exports = function (baseConfig, ssrConfig, webpackEnv = 'development') {
 
     // 读取env文件，或者自定义
     return merge(baseConfig, {
-        entry: { main: '/' + ssrConfig.entry },
+        entry: { main: path.resolve(projectRoot, ssrConfig.entry) },
         output: {
             filename: 'server.js',
             path: path.resolve(projectRoot, ssrConfig.dist),

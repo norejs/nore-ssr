@@ -4,7 +4,7 @@
     "description": "SSR builder for NoreJS",
     "main": "index.js",
     "bin": {
-        "norejs-ssr-builder": "./bin/norejs-ssr.js"
+        "norejs-ssr-builder": "./bin/norejs-ssr-builder.js"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"

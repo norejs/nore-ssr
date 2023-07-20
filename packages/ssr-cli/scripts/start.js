@@ -44,10 +44,7 @@ module.exports = function start(options, webpackEnv = 'development') {
     if (config.ssr) {
         childProcess.push(
             runSh(
-                path.resolve(
-                    __dirname,
-                    '../node_modules/.bin/norejs-ssr-builder'
-                ) +
+                getBinPath('norejs-ssr-builder') +
                     ' ' +
                     (webpackEnv === 'development' ? 'start' : 'build'),
                 {},
@@ -84,5 +81,19 @@ module.exports = function start(options, webpackEnv = 'development') {
         });
         process.exit(1);
     });
+    function getBinPath(
+        name,
+        start = path.resolve(__dirname, '../node_modules/')
+    ) {
+        const fs = require('fs');
+        const binPath = path.resolve(start, '.bin', name);
+        if (fs.existsSync(binPath)) {
+            return binPath;
+        }
+        if (start === '/') {
+            return null;
+        }
+        return getBinPath(name, path.resolve(start, '..'));
+    }
     // 运行服务端
 };

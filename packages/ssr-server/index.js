@@ -51,7 +51,7 @@ module.exports = function SSRServer(config, envName, cb) {
                 );
             }
         } catch (error) {
-            console.log('error', error);
+            // console.log('error', error);
         }
 
         return html;
@@ -77,9 +77,9 @@ module.exports = function SSRServer(config, envName, cb) {
             .replace('</head>', `<style>${css}</style></head>`)
             .replace(
                 '<div id="root">',
-                `<div id="root"><script>window._INIT_STORE_STATE=${JSON.stringify(
+                `<script>window._INIT_STORE_STATE=${JSON.stringify(
                     initialState
-                )}</script>${appString}`
+                )}</script><div id="root">${appString}`
             );
         return res.send(data);
     });
