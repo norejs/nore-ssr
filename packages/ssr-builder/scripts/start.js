@@ -4,7 +4,7 @@ const { getProjectConfig } = require('@norejs/ssr-utils');
 module.exports = function start(options, webpackEnv = 'development') {
     const config = getProjectConfig();
     if (config.ssr) {
-        const builderName = config.ssr.builder || 'react-scripts-ssr';
+        const builderName = config.ssr.builder || 'modern';
         const builder = require(`../plugins/${builderName}`);
         return builder(options, config.ssr, webpackEnv);
     }

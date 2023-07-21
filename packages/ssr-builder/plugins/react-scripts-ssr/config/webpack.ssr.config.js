@@ -1,8 +1,9 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
-
 const { merge } = require('webpack-merge');
-const { requireNpmFromCwd } = require('@norejs/ssr-utils');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+
 // 去掉HTMLWebpackPlugin
 const ssrDisablePlugins = [
     'HtmlWebpackPlugin',
@@ -13,16 +14,15 @@ const ssrDisablePlugins = [
     'ReactRefreshWebpackPlugin',
 ];
 
-const MiniCssExtractPlugin = requireNpmFromCwd('mini-css-extract-plugin');
+
 
 module.exports = function (baseConfig, ssrConfig, webpackEnv = 'development') {
-    console.log('baseConfig', baseConfig);
     // 去掉多余的插件
     baseConfig.plugins = baseConfig.plugins.filter((plugin) => {
         return !ssrDisablePlugins.includes(plugin.constructor.name);
     });
     if (
-        baseConfig.plugins.find(
+        !baseConfig.plugins.find(
             (plugin) => plugin.constructor.name === 'MiniCssExtractPlugin'
         )
     ) {
@@ -59,7 +59,7 @@ module.exports = function (baseConfig, ssrConfig, webpackEnv = 'development') {
     });
 
     // 读取env文件，或者自定义
-    return merge(baseConfig, {
+    const ssrWebpackConfig = merge(baseConfig, {
         entry: { main: path.resolve(projectRoot, ssrConfig.entry) },
         output: {
             filename: 'server.js',
@@ -74,4 +74,6 @@ module.exports = function (baseConfig, ssrConfig, webpackEnv = 'development') {
         target: 'node',
         externals: [nodeExternals()],
     });
+    console.log('ssrWebpackConfig', ssrWebpackConfig);
+    return ssrWebpackConfig;
 };

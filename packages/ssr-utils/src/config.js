@@ -1,8 +1,8 @@
 const defaultConfig = {
     ssr: {
-        entry: 'src/server.js',
+        entry: 'src/server.jsx',
         dist: 'build-ssr',
-        builder: 'react-scripts-ssr',
+        builder: 'modern',
     },
     csr: {
         dist: 'build',

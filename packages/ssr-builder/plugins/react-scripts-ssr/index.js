@@ -1,8 +1,5 @@
 const fs = require('fs-extra');
-const {
-    getNpmPathFromCwd,
-    getFilePathFromCwd,
-} = require('@norejs/ssr-utils');
+const { getNpmPathFromCwd, getFilePathFromCwd } = require('@norejs/ssr-utils');
 
 const runWebpack = require('../../utils/run-webpack');
 
@@ -13,9 +10,16 @@ module.exports = function start(
 ) {
     process.env.NODE_ENV = webpackEnv;
     process.env.BABEL_ENV = webpackEnv;
+    const isDev = webpackEnv === 'development';
     // 获取react-scripts 的配置
-    const projectWebpackConfigPath = getWebpackFile('webpack.config.js');
-    const baseWebpackConfig = require(projectWebpackConfigPath)(webpackEnv);
+    const projectWebpackConfigPath =
+        getWebpackFile('webpack.config.js') ||
+        getWebpackFile('webpack.config.' + (isDev ? 'dev' : 'prod') + '.js');
+    console.log('projectWebpackConfigPath', projectWebpackConfigPath);
+    let baseWebpackConfig = require(projectWebpackConfigPath);
+    if (typeof baseWebpackConfig === 'function') {
+        baseWebpackConfig = baseWebpackConfig(webpackEnv);
+    }
     const ssrWebpackConfigFactory = getSSRWebpackConfig();
     if (typeof ssrWebpackConfigFactory !== 'function') {
         throw new Error('webpack.ssr.config.js should export a function');
@@ -56,9 +60,7 @@ function getWebpackFile(webpackFileName) {
         'react-scripts/config/' + webpackFileName
     );
     if (!fs.existsSync(webpackConfigPath)) {
-        throw new Error(
-            'react-scripts is not installed in your project please make sure you have installed it'
-        );
+        return null;
     }
     return webpackConfigPath;
 }

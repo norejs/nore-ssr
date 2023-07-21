@@ -25,6 +25,7 @@
     "dependencies": {
         "@norejs/ssr-builder": "^0.0.2",
         "@norejs/ssr-server": "^0.0.2",
-        "@norejs/ssr-utils": "^0.0.2"
+        "@norejs/ssr-utils": "^0.0.2",
+        "concurrently": "^8.2.0"
     }
 }
