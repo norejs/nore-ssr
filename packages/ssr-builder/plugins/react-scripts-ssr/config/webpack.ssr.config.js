@@ -2,7 +2,7 @@ const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
 const { merge } = require('webpack-merge');
-const { requireNpmFromCwd } = require('../../../utils/project');
+const { requireNpmFromCwd } = require('@norejs/ssr-utils');
 // 去掉HTMLWebpackPlugin
 const ssrDisablePlugins = [
     'HtmlWebpackPlugin',

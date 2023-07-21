@@ -1,12 +1,11 @@
 // 读取项目中的配置，监测当前项目是否react-scripts 项目
 
-const {
-    getProjectConfig,
-    isReactScriptsInstalled,
-} = require('../utils/project');
-const runSh = require('../utils/runsh');
+const { getProjectConfig, isReactScriptsInstalled } = require('@norejs/ssr-utils');
+const { runSh } = require('@norejs/ssr-utils');
 const chalk = require('chalk');
 const path = require('path');
+const fs = require('fs-extra');
+
 module.exports = function start(options, webpackEnv = 'development') {
     const config = getProjectConfig();
     // 运行客户端
@@ -15,7 +14,8 @@ module.exports = function start(options, webpackEnv = 'development') {
     if (isReactScriptsInstalled) {
         childProcess.push(
             runSh(
-                'react-scripts ' +
+                getBinPath('react-scripts') +
+                    ' ' +
                     (webpackEnv === 'development' ? 'start' : 'build'),
                 {
                     print: false,
@@ -44,7 +44,10 @@ module.exports = function start(options, webpackEnv = 'development') {
     if (config.ssr) {
         childProcess.push(
             runSh(
-                getBinPath('norejs-ssr-builder') +
+                getBinPath(
+                    'norejs-ssr-builder',
+                    path.resolve(__dirname, '../')
+                ) +
                     ' ' +
                     (webpackEnv === 'development' ? 'start' : 'build'),
                 {},
@@ -81,19 +84,18 @@ module.exports = function start(options, webpackEnv = 'development') {
         });
         process.exit(1);
     });
-    function getBinPath(
-        name,
-        start = path.resolve(__dirname, '../node_modules/')
-    ) {
+
+    function getBinPath(name, start = process.cwd()) {
         const fs = require('fs');
-        const binPath = path.resolve(start, '.bin', name);
+        const binPath = path.resolve(start, './node_modules/.bin', name);
+        console.log('binPath', binPath);
         if (fs.existsSync(binPath)) {
             return binPath;
         }
         if (start === '/') {
-            return null;
+            return '';
         }
-        return getBinPath(name, path.resolve(start, '..'));
+        return getBinPath(name, path.resolve(start, '../'));
     }
     // 运行服务端
 };

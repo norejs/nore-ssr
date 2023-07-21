@@ -1,22 +1,16 @@
-const { requireNpmFromCwd } = require('./project');
-const formatWebpackMessages = requireNpmFromCwd(
-    'react-dev-utils/formatWebpackMessages'
-);
-const chalk = requireNpmFromCwd('react-dev-utils/chalk');
-const printBuildError = requireNpmFromCwd('react-dev-utils/printBuildError');
+const { requireNpmFromCwd } = require('@norejs/ssr-utils');
 const webpack = requireNpmFromCwd('webpack');
-
 // TODO:展示进度条
 // TODO: 展示结果
-module.exports = function runWebpack(config, webpackEnv = 'development') {
+module.exports = function runWebpack(config, webpackEnv = 'development', cb) {
     const isDev = webpackEnv === 'development';
-    isDev ? start(config) : build(config);
+    isDev ? start(config, cb) : build(config, cb);
 };
 function start(config) {
     const compiler = webpack(config);
     compiler.watch({}, (err, stats) => {
         if (err) {
-            return printBuildError(err);
+            
         }
         const messages = formatWebpackMessages(
             stats.toJson({ all: false, warnings: true, errors: true })
@@ -34,7 +28,6 @@ function start(config) {
 function build(config) {
     const compiler = webpack(config);
     return new Promise((resolve, reject) => {
-        console.log('SSR Compiling...');
         compiler.run((err, stats) => {
             let messages;
             if (err) {

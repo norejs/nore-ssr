@@ -2,9 +2,9 @@ const fs = require('fs-extra');
 const {
     getNpmPathFromCwd,
     getFilePathFromCwd,
-} = require('../../utils/project');
+} = require('@norejs/ssr-utils');
 
-const runWebpack = require('../../utils/runWebpack');
+const runWebpack = require('../../utils/run-webpack');
 
 module.exports = function start(
     options,
