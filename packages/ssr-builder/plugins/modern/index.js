@@ -1,6 +1,8 @@
-const { getProjectConfig } = require('@norejs/ssr-utils');
 const { createBuilder } = require('@modern-js/builder');
-const { builderWebpackProvider } = require('@modern-js/builder-webpack-provider');
+const {
+    builderWebpackProvider,
+} = require('@modern-js/builder-webpack-provider');
+// const nodeExternals = require('webpack-node-externals');
 const path = require('path');
 const projectRoot = process.cwd();
 
@@ -12,6 +14,18 @@ module.exports = async function start(
     // 使用modern builder 构建项目
     const provider = builderWebpackProvider({
         builderConfig: {
+            output: {
+                distPath: {
+                    root: ssrConfig.dist,
+                },
+            },
+            tools: {
+                webpack: (config, { env }) => {
+                    console.log('webpack config', config);
+                    config.output.libraryTarget = 'commonjs';
+                    // config.externals = [nodeExternals()];
+                },
+            },
             // some configs
         },
     });
@@ -19,13 +33,10 @@ module.exports = async function start(
         cwd: process.cwd(),
         entry: { main: path.resolve(projectRoot, ssrConfig.entry) },
         target: 'node',
-        output: {
-            path: ssrConfig.dist,
-            filename: 'server.js',
-            path: path.resolve(projectRoot, ssrConfig.dist),
-            libraryTarget: 'commonjs',
-        },
     });
-    
-    await builder.build();
+
+    await builder.build({
+        mode: webpackEnv,
+        watch: webpackEnv === 'development',
+    });
 };

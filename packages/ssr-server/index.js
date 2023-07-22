@@ -14,7 +14,7 @@ module.exports = function SSRServer(config, envName, cb) {
     function getPathFromCSRDist(...args) {
         return path.resolve(process.cwd(), config.csr.dist, ...args);
     }
-    const ssrEntry = getPathFromSSRDsit('server.js');
+    const ssrEntry = getPathFromSSRDsit('bundles/main.js');
     const ssrManifest = getPathFromSSRDsit('asset-manifest.json');
     const ssrPort = config.ssr.port || 8080;
     const renderApp = require(ssrEntry).default;
