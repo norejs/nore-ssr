@@ -3,7 +3,5 @@
     "private": true,
     "scripts": {},
     "devDependencies": {},
-    "dependencies": {
-        "commander": "^11.0.0"
-    }
+    "dependencies": {}
 }
