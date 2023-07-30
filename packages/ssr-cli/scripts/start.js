@@ -9,10 +9,22 @@ module.exports = function start(options, webpackEnv = 'development') {
     const command = webpackEnv === 'development' ? 'start' : 'build';
     const config = getProjectConfig();
     // 如何兼容CSR 命令
+    const reactScripts = getBinPath('react-scripts');
+    const csrcommand = config.csr.start
+        ? config.csr.start
+        : reactScripts
+        ? reactScripts + ' ' + command
+        : '';
+    if (!csrcommand) {
+        console.log(chalk.red('Please config csr.start in nore.config.js'));
+        return;
+    }
+
     const { result } = concurrently([
         {
-            command: getBinPath('react-scripts') + ' ' + command,
+            command: csrcommand,
             name: 'client',
+            cwd: path.resolve(process.cwd()),
         },
         {
             command:
@@ -25,16 +37,18 @@ module.exports = function start(options, webpackEnv = 'development') {
             name: 'server',
         },
     ]);
-    result.then((res) => {});
+    result.then((res) => {
+        console.log('concurrently res', res);
+    });
     let loaded = 0;
     setTimeout(() => {
         loaded++;
         loaded++;
-        // startServer();
+        startServer();
     }, 5000);
     let server;
+    // 如何监听项目启动成功
     function startServer() {
-        
         if (!server && loaded === 2 && webpackEnv === 'development') {
             console.log(chalk.green('Starting SSR server...'));
             const SSRServer = require('@norejs/ssr-server');
@@ -49,10 +63,10 @@ module.exports = function start(options, webpackEnv = 'development') {
     }
     process.on('unhandledRejection', (err) => {
         console.log('unhandledRejection', err);
-        childProcess.forEach((item) => {
-            item.kill();
-        });
-        process.exit(1);
+        // childProcess.forEach((item) => {
+        //     item.kill();
+        // });
+        // process.exit(1);
     });
 
     function getBinPath(name, start = process.cwd()) {

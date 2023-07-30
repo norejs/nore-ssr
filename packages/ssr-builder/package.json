@@ -7,6 +7,8 @@
         "norejs-ssr-builder": "./bin/norejs-ssr-builder.js"
     },
     "scripts": {
+        "build": "echo build",
+        "start": "echo start",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",

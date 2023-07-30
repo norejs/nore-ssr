@@ -17,7 +17,9 @@
         "url": "git+https://github.com/norejs/nore-ssr.git.git"
     },
     "scripts": {
-        "test": "node ./__tests__/@norejs/ssr-cli.test.js"
+        "test": "node ./__tests__/@norejs/ssr-cli.test.js",
+        "build": "echo build",
+        "start": "echo start"
     },
     "bugs": {
         "url": "https://github.com/norejs/nore-ssr.git/issues"

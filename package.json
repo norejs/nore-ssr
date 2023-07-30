@@ -1,8 +1,14 @@
 {
     "name": "root",
     "private": true,
-    "scripts": {},
+    "scripts": {
+        "start": "nx run-many -t start",
+        "build": "nx run-many -t build"
+    },
     "dependencies": {
         "nx": "^16.5.5"
+    },
+    "devDependencies": {
+        "nx-cloud": "^16.1.1"
     }
 }
