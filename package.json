@@ -2,6 +2,7 @@
     "name": "root",
     "private": true,
     "scripts": {},
-    "devDependencies": {},
-    "dependencies": {}
+    "dependencies": {
+        "nx": "^16.5.5"
+    }
 }
