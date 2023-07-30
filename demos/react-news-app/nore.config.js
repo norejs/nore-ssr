@@ -5,5 +5,6 @@ module.exports = {
     csr: {
         port: 3000,
         start: 'react-scripts start',
+        build: 'react-scripts build',
     },
 };

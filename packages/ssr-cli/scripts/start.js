@@ -10,13 +10,15 @@ module.exports = function start(options, webpackEnv = 'development') {
     const config = getProjectConfig();
     // 如何兼容CSR 命令
     const reactScripts = getBinPath('react-scripts');
-    const csrcommand = config.csr.start
-        ? config.csr.start
+    const csrcommand = config.csr[command]
+        ? config.csr[command]
         : reactScripts
         ? reactScripts + ' ' + command
         : '';
     if (!csrcommand) {
-        console.log(chalk.red('Please config csr.start in nore.config.js'));
+        console.log(
+            chalk.red('Please config csr.' + command + ' in nore.config.js')
+        );
         return;
     }
 
