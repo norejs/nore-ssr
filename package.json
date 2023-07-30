@@ -1,13 +1,9 @@
 {
     "name": "root",
     "private": true,
-    "scripts": {
-        "bootstrap": "lerna bootstrap",
-        "start": "lerna run start --stream --loglevel verbose"
-    },
+    "scripts": {},
     "devDependencies": {},
     "dependencies": {
-        "commander": "^11.0.0",
-        "lerna": "5"
+        "commander": "^11.0.0"
     }
 }

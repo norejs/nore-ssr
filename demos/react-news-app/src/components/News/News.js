@@ -4,7 +4,7 @@ import NewsItem from "../NewsItem/NewsItem";
 import Spinner from "../Spinner/Spinner";
 import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Nullimage from "../../components/Images/nullimage.png";
+import Nullimage from "../Images/nullimage.png";
 import { Row, Col } from "react-bootstrap";
 import { Header, Container, card } from "./index";
 import { endpointPath } from "../../config/api";
