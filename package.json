@@ -3,7 +3,8 @@
     "private": true,
     "scripts": {
         "start": "nx run-many -t start",
-        "build": "nx run-many -t build"
+        "build": "nx run-many -t build",
+        "test": "nx run-many -t test"
     },
     "dependencies": {
         "nx": "^16.5.5"
