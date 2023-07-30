@@ -4,7 +4,7 @@
   "private": true,
   "description": "> TODO: description",
   "author": "pengzai <roc.liu@hotmail.com>",
-  "homepage": "https://github.com/pengzai-dev/UniversalSSR#readme",
+  "homepage": "https://github.com/norejs/nore-ssr.git#readme",
   "license": "ISC",
   "main": "lib/ssr-server-headless.js",
   "directories": {
@@ -16,13 +16,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pengzai-dev/UniversalSSR.git"
+    "url": "git+https://github.com/norejs/nore-ssr.git.git"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
-    "url": "https://github.com/pengzai-dev/UniversalSSR/issues"
+    "url": "https://github.com/norejs/nore-ssr.git/issues"
   },
   "dependencies": {
   }

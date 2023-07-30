@@ -9,7 +9,7 @@
         "start": "node index.js"
     },
     "bugs": {
-        "url": "https://github.com/pengzai-dev/UniversalSSR/issues"
+        "url": "https://github.com/norejs/nore-ssr.git/issues"
     },
     "main": "index.js",
     "dependencies": {
