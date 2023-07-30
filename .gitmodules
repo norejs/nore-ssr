@@ -1,0 +1,6 @@
+[submodule "demos/news-app"]
+	path = demos/news-app
+	url = https://github.com/pengzai-dev/react-news-app.git
+[submodule "demos/vusic"]
+	path = demos/vusic
+	url = https://github.com/pengzai-dev/vusic.git
