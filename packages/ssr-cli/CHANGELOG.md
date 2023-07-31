@@ -1,5 +1,17 @@
 # @norejs/ssr-cli
 
+## 1.0.0
+
+### Major Changes
+
+- update
+
+### Patch Changes
+
+- Updated dependencies
+  - @norejs/ssr-builder@1.0.0
+  - @norejs/ssr-server@1.0.0
+
 ## 0.0.3
 
 ### Patch Changes

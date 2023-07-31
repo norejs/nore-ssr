@@ -1,6 +1,6 @@
 {
     "name": "@norejs/ssr-builder",
-    "version": "0.0.3",
+    "version": "1.0.0",
     "description": "SSR builder for NoreJS",
     "main": "index.js",
     "bin": {
@@ -17,7 +17,7 @@
         "@modern-js/builder": "^2.27.0",
         "@modern-js/builder-rspack-provider": "^2.27.0",
         "@modern-js/builder-webpack-provider": "^2.27.0",
-        "@norejs/ssr-server": "^0.1.0",
+        "@norejs/ssr-server": "^1.0.0",
         "@norejs/ssr-utils": "^0.0.2",
         "commander": "10",
         "fs-extra": "^11.1.1",
