@@ -11,7 +11,7 @@
         "start": "echo start",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "",
+    "author": "pengzai",
     "license": "ISC",
     "dependencies": {
         "@modern-js/builder": "^2.27.0",
