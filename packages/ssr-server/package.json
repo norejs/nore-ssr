@@ -6,7 +6,8 @@
     "license": "ISC",
     "scripts": {
         "test": "echo \"Error: run tests from root\" && exit 1",
-        "start": "node index.js"
+        "start": "node index.js",
+        "build": "echo \"Error: run build from root\" && exit 0"
     },
     "bugs": {
         "url": "https://github.com/norejs/nore-ssr.git/issues"
