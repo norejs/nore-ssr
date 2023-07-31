@@ -5,7 +5,7 @@
         "start": "nx run-many -t start",
         "build": "nx run-many -t build",
         "test": "nx run-many -t test",
-        "prepare": "git submodule add https://github.com/pengzai-dev/react-news-app.git demos/news-app && git submodule add https://github.com/pengzai-dev/vusic.git demos/vusic"
+        "lint": "nx run-many -t lint"
     },
     "dependencies": {
         "nx": "^16.5.5"
