@@ -56,7 +56,7 @@ module.exports = function SSRServer(config, envName, cb) {
 
         return html;
     }
-
+    console.log('ssrEntry', ssrEntry);
     app.get('/*', async (req, res, next) => {
         // 有后缀名或者是静态资源不处理
         if (
