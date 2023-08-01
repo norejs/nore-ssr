@@ -1,6 +1,7 @@
 {
     "name": "root",
     "private": true,
+    "version": "0.0.5",
     "scripts": {
         "start": "nx run-many -t start",
         "build": "nx run-many -t build",
