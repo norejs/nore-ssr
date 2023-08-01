@@ -1,12 +1,5 @@
-# `ssr-server-headless`
+# `@norejs/ssr-server-headless`
 
-> TODO: description
+@norejs/ssr lightweight、universal SSR solution;
 
-## Usage
-
-```
-const ssrServerHeadless = require('ssr-server-headless');
-
-// TODO: DEMONSTRATE API
-update1
-```
+It's work in progress. Please don't use it yet.

@@ -1,11 +1,6 @@
 # `@norejs/ssr-cli`
 
-> TODO: description
+@norejs/ssr-cli lightweight、universal SSR solution;
 
-## Usage
+It's work in progress. Please don't use it yet.
 
-```
-const ssrCli = require('@norejs/ssr-cli');
-
-// TODO: DEMONSTRATE API
-```
