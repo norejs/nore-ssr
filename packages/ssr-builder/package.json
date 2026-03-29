@@ -1,6 +1,11 @@
 {
     "name": "@norejs/ssr-builder",
-    "version": "1.0.0",
+    "version": "1.0.1",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/norejs/nore-ssr.git",
+        "directory": "packages/ssr-builder"
+    },
     "description": "SSR builder for NoreJS",
     "main": "index.js",
     "bin": {

@@ -1,7 +1,12 @@
 {
     "name": "@norejs/ssr-server",
-    "version": "1.0.0",
-    "description": "> TODO: description",
+    "version": "1.0.1",
+    "description": "SSR server for NoreJS",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/norejs/nore-ssr.git",
+        "directory": "packages/ssr-server"
+    },
     "author": "pengzai <roc.liu@hotmail.com>",
     "license": "ISC",
     "scripts": {
